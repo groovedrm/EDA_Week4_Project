@@ -14,5 +14,6 @@ NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
 
 # Answering Question 1
-subsetYears = c(1999,2002,2005,2008)
-distilledNEI = NEI[NEI$year %in% subsetYears, ]
+NEI$year <- as.integer(NEI$year)
+subsetYears <- as.integer(c(1999,2002,2005,2008))
+distilledNEI <- subset(NEI, year %in% subsetYears)
