@@ -38,6 +38,7 @@ distilledNEI <- subset(NEI, as.integer(year) %in% subsetYears)
 distilledNEI_BaltCity <- subset(NEI, fips == "24510")
 tblBaltCity <- data.table(distilledNEI_BaltCity)
 grpBaltCity <-  tblBaltCity[, sum(Emissions), keyby=year]
+hist(grpBaltCity)
 
 # Question 3
 # Of the four types of sources indicated by the 𝚝𝚢𝚙𝚎 (point, nonpoint, onroad, nonroad) vale, riab
