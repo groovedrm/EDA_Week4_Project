@@ -21,6 +21,8 @@ setwd("/Users/Chris/development/r/EDA_Week4_Project/")
 # Loading the data
 NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
+distilledSCC <- SCC[, c("SCC","Data.Category","Short.Name","EI.Sector","SCC.Level.One","SCC.Level.Two","SCC.Level.Three","SCC.Level.Four")]
+detailedNEI <- merge(NEI, distilledSCC, by=c("SCC"), all.x = TRUE)
 
 # Answering Question 1
 # Have total emissions from PM2.5 decreased in the United States from 1999 to 2008? 
@@ -38,18 +40,25 @@ distilledNEI <- subset(NEI, as.integer(year) %in% subsetYears)
 distilledNEI_BaltCity <- subset(NEI, fips == "24510")
 tblBaltCity <- data.table(distilledNEI_BaltCity)
 grpBaltCity <-  tblBaltCity[, sum(Emissions), keyby=year]
-hist(grpBaltCity)
+# hist(grpBaltCity)
 
 # Question 3
 # Of the four types of sources indicated by the 𝚝𝚢𝚙𝚎 (point, nonpoint, onroad, nonroad) vale, riab
 # which of these four sources have seen decreases in emissions from 1999–2008 for Baltimore City? 
 # Which have seen increases in emissions from 1999–2008? Use the ggplot2 plotting system to make 
 # a plot answer this question.
-
 # Note, can use tblBaltCity to start
 
+# Question 4
+# Looking at all coal related sources over time
+coalNEI <- detailedNEI[grep("Coal", detailedNEI$EI.Sector), ]
 
-
+# Question 5
+# Seems like the best way to approach this one is to select everything from the EI.Secto category 
+# that has "On-Road" in the sector name. The question isn't explicit about exactly what
+# motor vehicle source means so this is up for interpretation I suppose. This is mine!
+mvSources <- detailedNEI[grep("On-Road", detailedNEI$EI.Sector), ]
+mvSources <- subset(mvSources, fips %in% c("24510"))
 
 # Question 6
 # Compare emissions from motor vehicle sources in Baltimore City with emissions 
